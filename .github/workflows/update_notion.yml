@@ -23,12 +23,8 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
 
-    # Ajouter une étape pour écrire les variables d'environnement dans le fichier JSON
-    - name: Write environment variables to JSON
-      run: | 
-        echo '{"notion_token": "'"$NOTION_TOKEN"'", "database_id": "'"$DATABASE_ID"'"}' > config/config.json
-
-    # Ajouter une étape pour écrire les variables d'environnement dans le fichier JSON
-    - name: Test
-      run: | 
-        cat config/config.json
+    - name: Run Python script
+      run: python main.py
+      env:
+        NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        DATABASE_ID: ${{ secrets.DATABASE_ID }}

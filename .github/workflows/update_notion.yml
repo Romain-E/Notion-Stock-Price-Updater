@@ -1,0 +1,26 @@
+name: Update Notion Database
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Exécute tous les jours à minuit
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    # Ajouter une étape pour écrire les variables d'environnement dans le fichier JSON
+    - name: Write environment variables to JSON
+      run: | 
+        echo '{"notion_token": "'"$NOTION_TOKEN"'", "database_id": "'"$DATABASE_ID"'"}' > config/config.json

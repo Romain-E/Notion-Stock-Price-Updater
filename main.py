@@ -42,6 +42,5 @@ class Main:
         print("=== Arrêt de l'application ===")
 
 if __name__ == "__main__":
-    config_file = 'config/config.json'
-    main_app = Main(config_file)
+    main_app = Main()
     main_app.run()

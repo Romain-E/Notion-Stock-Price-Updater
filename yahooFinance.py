@@ -7,8 +7,10 @@ class YahooFinance:
     def get_stock_price(self, symbol):
         try:
             stock = yf.Ticker(symbol)
-            price = stock.history(period="1d")["Close"].iloc[-1]
-            return price
+            data = stock.history(period="1d")
+            current_price = data["Close"].iloc[-1]
+            current_volume = data["Volume"].iloc[-1]
+            return current_price
         except Exception as e:
             print(f"Erreur lors de la récupération du prix de l'action {symbol}: {e}")
             return None

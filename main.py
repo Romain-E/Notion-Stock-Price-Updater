@@ -1,4 +1,5 @@
 import json
+import os
 from notion import NotionClass
 from yahooFinance import YahooFinance
 
@@ -33,14 +34,14 @@ class Main:
 
         for page in pages:
             page_id     = page.get("id")
-            page_stock  = page.get("properties").get("Nom").get("title")[0].get("plain_text")
+            page_stock  = page.get("properties").get("Ticker").get("title")[0].get("plain_text")
             page_price  = yahooFinance.get_stock_price(page_stock)
-            update_data = {"Prix": {"number": page_price}}
+            update_data = {"Prix actuel": {"number": round(page_price, 2)}}
             notion.update_page(page_id, update_data)
 
         print("=== Arrêt de l'application ===")
 
 if __name__ == "__main__":
-    config_file = 'config.json'
+    config_file = 'config/config.json'
     main_app = Main(config_file)
     main_app.run()

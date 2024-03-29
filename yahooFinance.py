@@ -16,7 +16,6 @@ class YahooFinance:
             if pd.isna(current_price):
                 print(f"No closing price available for {symbol}.")
                 return None
-            current_volume = data["Volume"].iloc[-1]
             return current_price
         except KeyError as ke:
             print(f"KeyError while retrieving data for {symbol}: {ke}")

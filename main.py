@@ -4,9 +4,9 @@ from notion import NotionClass
 from yahooFinance import YahooFinance
 
 class Main:
-    def __init__(self):
-        self.notion_token = os.environ.get('NOTION_TOKEN')
-        self.datanase_id = os.environ.get('DATABASE_ID')
+    def __init__(self, config_file):
+        self.config_file = config_file
+        self.config_data = self.load_config()
         self.headers = self.initialize_headers()
 
     def load_config(self):
@@ -16,7 +16,7 @@ class Main:
 
     def initialize_headers(self):
         headers = {
-            "Authorization": "Bearer " + self.notion_token,
+            "Authorization": "Bearer " + self.config_data.get('notion_token'),
             "Content-Type": "application/json",
             "Notion-Version": "2022-06-28",
         }
@@ -26,7 +26,7 @@ class Main:
         print("=== Lancement de l'application ===")
 
         # Init
-        notion = NotionClass(database_id=self.datanase_id, headers=self.headers)
+        notion = NotionClass(database_id=self.config_data.get('database_id'), headers=self.headers)
         yahooFinance = YahooFinance()
 
         # Récupération des pages 
@@ -37,7 +37,7 @@ class Main:
             print(page_id)
             page_stock  = page.get("properties").get("Ticker").get("title")[0].get("plain_text")
             print(page_stock)
-            page_price  = yahooFinance.get_stock_price(page_stock)
+            page_price = yahooFinance.get_stock_price(page_stock)
             if(page_price):
                 print(page_price)
                 update_data = {"Prix actuel": {"number": round(page_price, 2)}}
@@ -48,5 +48,6 @@ class Main:
         print("=== Arrêt de l'application ===")
 
 if __name__ == "__main__":
-    main_app = Main()
+    config_file = 'config/config.json'
+    main_app = Main(config_file)
     main_app.run()

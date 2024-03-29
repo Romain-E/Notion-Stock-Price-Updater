@@ -27,3 +27,8 @@ jobs:
     - name: Write environment variables to JSON
       run: | 
         echo '{"notion_token": "'"$NOTION_TOKEN"'", "database_id": "'"$DATABASE_ID"'"}' > config/config.json
+
+    # Ajouter une étape pour écrire les variables d'environnement dans le fichier JSON
+    - name: Test
+      run: | 
+        cat config/config.json

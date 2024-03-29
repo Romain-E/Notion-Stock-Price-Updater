@@ -38,9 +38,12 @@ class Main:
             page_stock  = page.get("properties").get("Ticker").get("title")[0].get("plain_text")
             print(page_stock)
             page_price  = yahooFinance.get_stock_price(page_stock)
-            print(page_price)
-            update_data = {"Prix actuel": {"number": round(page_price, 2)}}
-            notion.update_page(page_id, update_data)
+            if(page_price):
+                print(page_price)
+                update_data = {"Prix actuel": {"number": round(page_price, 2)}}
+                notion.update_page(page_id, update_data)
+            else:
+                print(f"Pas de mise à jour pour {page_stock}.")
 
         print("=== Arrêt de l'application ===")
 

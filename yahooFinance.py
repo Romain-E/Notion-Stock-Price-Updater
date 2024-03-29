@@ -1,4 +1,5 @@
 import yfinance as yf
+import pandas as pd
 
 class YahooFinance:
     def __init__(self):
@@ -8,11 +9,20 @@ class YahooFinance:
         try:
             stock = yf.Ticker(symbol)
             data = stock.history(period="1d")
+            if data.empty:
+                print(f"No data available for {symbol}.")
+                return None
             current_price = data["Close"].iloc[-1]
+            if pd.isna(current_price):
+                print(f"No closing price available for {symbol}.")
+                return None
             current_volume = data["Volume"].iloc[-1]
             return current_price
+        except KeyError as ke:
+            print(f"KeyError while retrieving data for {symbol}: {ke}")
+            return None
         except Exception as e:
-            print(f"Erreur lors de la récupération du prix de l'action {symbol}: {e}")
+            print(f"Error while retrieving data for {symbol}: {e}")
             return None
 
 # Exemple d'utilisation :

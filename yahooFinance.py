@@ -12,11 +12,12 @@ class YahooFinance:
             if data.empty:
                 print(f"No data available for {symbol}.")
                 return None
+            nom_action = stock.info['longName']
             current_price = data["Close"].iloc[-1]
             if pd.isna(current_price):
                 print(f"No closing price available for {symbol}.")
                 return None
-            return current_price
+            return nom_action, current_price
         except KeyError as ke:
             print(f"KeyError while retrieving data for {symbol}: {ke}")
             return None

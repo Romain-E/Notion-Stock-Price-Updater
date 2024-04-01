@@ -34,16 +34,17 @@ class Main:
 
         for page in pages:
             page_id     = page.get("id")
-            print(page_id)
-            page_stock  = page.get("properties").get("Ticker").get("title")[0].get("plain_text")
-            print(page_stock)
-            page_price = yahooFinance.get_stock_price(page_stock)
+            page_ticker  = page.get("properties").get("Ticker").get("title")[0].get("plain_text")
+            page_name, page_price = yahooFinance.get_stock_price(page_ticker)
             if(page_price):
-                print(page_price)
-                update_data = {"Prix actuel": {"number": round(page_price, 2)}}
+                print(f"{page_name} : {page_price}")
+                update_data = {
+                    "Label : Nom" : {"rich_text": [{"type": "text", "text": {"content": page_name}}]},
+                    "Prix actuel": {"number": round(page_price, 2)}
+                }
                 notion.update_page(page_id, update_data)
             else:
-                print(f"Pas de mise à jour pour {page_stock}.")
+                print(f"Pas de mise à jour pour {page_ticker}.")
 
         print("=== Arrêt de l'application ===")
 

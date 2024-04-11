@@ -10,8 +10,10 @@ class YahooFinance:
             stock = yf.Ticker(symbol)
             data = stock.history(period="1d")
             if data.empty:
-                print(f"No data available for {symbol}.")
-                return None
+                data = stock.history(period="1mo")
+                if data.empty:
+                    print(f"No data available for {symbol}.")
+                    return None
             nom_action = stock.info['longName']
             current_price = data["Close"].iloc[-1]
             if pd.isna(current_price):

@@ -2,7 +2,7 @@ name: Update Notion Database
 
 on:
   schedule:
-    - cron: '0 * * * *' # Exécute toutes les heures
+    - cron: '0 */5 * * *' # Exécute toutes 5 heures
   push:
     branches:
       - main

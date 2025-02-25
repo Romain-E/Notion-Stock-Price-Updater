@@ -38,17 +38,17 @@ class Main:
             result_yahoo = yahooFinance.get_stock_price(page_ticker)
             if result_yahoo is not None:
                 page_name, page_price = result_yahoo
+                if(page_price):
+                    print(f"{page_name} : {page_price}")
+                    update_data = {
+                        "Label : Nom" : {"rich_text": [{"type": "text", "text": {"content": page_name}}]},
+                        "Prix actuel": {"number": round(page_price, 2)}
+                    }
+                    notion.update_page(page_id, update_data)
+                else:
+                    print(f"Pas de mise à jour pour {page_ticker}.")
             else:
                 print(f"Erreur: Recherche Yahoo Finance échouée pour le ticker {page_ticker}")
-            if(page_price):
-                print(f"{page_name} : {page_price}")
-                update_data = {
-                    "Label : Nom" : {"rich_text": [{"type": "text", "text": {"content": page_name}}]},
-                    "Prix actuel": {"number": round(page_price, 2)}
-                }
-                notion.update_page(page_id, update_data)
-            else:
-                print(f"Pas de mise à jour pour {page_ticker}.")
 
         print("=== Arrêt de l'application ===")
 

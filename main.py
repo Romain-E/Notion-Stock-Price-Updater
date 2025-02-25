@@ -35,7 +35,11 @@ class Main:
         for page in pages:
             page_id     = page.get("id")
             page_ticker  = page.get("properties").get("Ticker").get("title")[0].get("plain_text")
-            page_name, page_price = yahooFinance.get_stock_price(page_ticker)
+            result_yahoo = yahooFinance.get_stock_price(page_ticker)
+            if result_yahoo is not None:
+                page_name, page_price = result_yahoo
+            else:
+                print(f"Erreur: Recherche Yahoo Finance échouée pour le ticker {page_ticker}")
             if(page_price):
                 print(f"{page_name} : {page_price}")
                 update_data = {
